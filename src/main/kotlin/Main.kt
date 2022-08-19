@@ -7,7 +7,9 @@ data class Post(
     val ownerId: Int,
     val date: Int,
     val text: String,
-    val friendsOnly: Boolean) {
+    val friendsOnly: Boolean,
+    val comments: Comments
+    ){
     class Comments(
         var count: Int = 0,
         val canPost: Boolean = true
