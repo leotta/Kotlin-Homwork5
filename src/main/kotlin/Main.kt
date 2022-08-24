@@ -56,7 +56,7 @@ data class Post(
     val replyOwnerId: Int,
     val replyPostId: Int,
     val friendsOnly: Boolean,
-    val comments: Comments,
+    val comments: Comment,
     val copyright: Copyright,
     val likes: Likes,
     val reposts: Reposts,
@@ -76,7 +76,7 @@ data class Post(
     val donut: Donut,
     val attachments: Array<Attachment> = emptyArray()
     )
-data class Comments(
+data class Comment(
     var count: Int = 0,
     val canPost: Boolean = true,
     val groupsCanPost: Int,
@@ -145,20 +145,31 @@ data class Donut (
 data class Placeholder(
     val placeholder: Boolean
 )
+
+class PostNotFoundException (message: String) : RuntimeException (message)
 object WallService {
     private var posts = emptyArray<Post>()
+    private var comments = emptyArray<Comment>()
 
     fun clear() {
         posts = emptyArray()
     }
 
+    fun createComment (postId: Int, comment: Comment): Comment{
+        for ((index, item) in posts.withIndex()){
+            if (index == postId) {
+                comments[index] = comment.copy()
+                return comments.last()
+            }
+        }
+        return throw PostNotFoundException ("$postId пост не найден")
+    }
     fun add(post: Post): Post {
         posts += post.copy()
         return posts.last()
     }
 
     fun update(post: Post): Boolean {
-        //var result = true
         for ((index, item) in posts.withIndex()) {
             if (post.id == item.id) {
                 posts[index] = post.copy()
