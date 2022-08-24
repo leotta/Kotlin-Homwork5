@@ -1,3 +1,50 @@
+data class Audio (
+    val id: Int,
+    val artist: String
+    )
+
+data class Video(
+    val id: Int,
+    val ownerId: Int
+)
+
+data class Photo(
+    val id: Int,
+    val albumeId: Int
+)
+
+data class Doc(
+    val id: Int,
+    val title: String
+)
+
+data class Link(
+    val url: String,
+    val title: String
+)
+interface Attachment{
+    var type: String
+}
+
+data class AudioAttachment(val audio: Audio): Attachment{
+    override var type = "audio"
+}
+
+data class VideoAttachment(val video: Video): Attachment{
+    override var type = "video"
+}
+
+data class PhotoAttachment(val photo: Photo): Attachment{
+    override var type = "photo"
+}
+
+data class DocAttachment(val doc: Doc): Attachment{
+    override var type = "doc"
+}
+
+data class LinkAttachment(val link: Link): Attachment{
+    override var type = "link"
+}
 
 data class Post(
     val id: Int,
@@ -26,7 +73,8 @@ data class Post(
     val markedAsAds: Boolean,
     val isFavorite: Boolean,
     val postponedId: Int,
-    val donut: Donut
+    val donut: Donut,
+    val attachments: Array<Attachment> = emptyArray()
     )
 data class Comments(
     var count: Int = 0,
@@ -97,25 +145,27 @@ data class Donut (
 data class Placeholder(
     val placeholder: Boolean
 )
-object WallService{
+object WallService {
     private var posts = emptyArray<Post>()
 
     fun clear() {
         posts = emptyArray()
     }
-    fun add (post: Post): Post {
+
+    fun add(post: Post): Post {
         posts += post.copy()
         return posts.last()
     }
 
     fun update(post: Post): Boolean {
-        var result = true
-        for ((index, item) in posts.withIndex())
-        if (post.id == item.id){
-            posts[index] = post.copy()
-            return true
-        } else result = false
-        return result
+        //var result = true
+        for ((index, item) in posts.withIndex()) {
+            if (post.id == item.id) {
+                posts[index] = post.copy()
+                return true
+            }
+        }
+        return false
     }
 }
 
