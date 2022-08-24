@@ -12,7 +12,7 @@ class WallServiceTest {
     @Test
     fun updateExisting() {
         //val service = WallService() //Ошибка Expression 'WallService' of type 'WallService' cannot be invoked as a function. The function 'invoke()' is not found
-        WallService.add(Post(1, 1,1,1,1,"1",22,1,true, Comment(0, true, 1, true, true),Copyright(1,"1", "1","1"), Likes(1, true,1,1),Reposts(1, null), Views(1), "1", PostSource("1", "1", "1", "1"), Geo("1","1", Place(1, "1", 1, 1, 1, "1", 1, 1, 1,1,1,"1")),1,true, true, false, true, true,true,1, Donut(true,1,Placeholder(true),true,"1")))
+        WallService.add(Post(1, 1,1,1,1,"1",22,1,true, Comment(0, true, 1, true, true),Copyright(1,"1", "1","1"), Likes(1, true,1,1),Reposts(1, null), Views(1), "1", PostSource("1", "1", "1", "1"), Geo("1","1", Place(1, "1", 1, 1, 1, "1", 1, 1, 1,1,1,"1")),1,true, true, false, true, true,true,1, Donut(true,1,Placeholder(true),true,"1"), attachments = arrayOf(AudioAttachment(Audio(1, "Song")))))
         WallService.add(Post(2, 1,1,1,1,"1",22,1,true, Comment(0, true, 1, true, true),Copyright(1,"1", "1","1"), Likes(1, true,1,1),Reposts(1, null), Views(1), "1", PostSource("1", "1", "1", "1"), Geo("1","1", Place(1, "1", 1, 1, 1, "1", 1, 1, 1,1,1,"1")),1,true, true, false, true, true,true,1, Donut(true,1,Placeholder(true),true,"1")))
         WallService.add(Post(3, 1,1,1,1,"1",22,1,true, Comment(0, true, 1, true, true),Copyright(1,"1", "1","1"), Likes(1, true,1,1),Reposts(1, null), Views(1), "1", PostSource("1", "1", "1", "1"), Geo("1","1", Place(1, "1", 1, 1, 1, "1", 1, 1, 1,1,1,"1")),1,true, true, false, true, true,true,1, Donut(true,1,Placeholder(true),true,"1")))
 
