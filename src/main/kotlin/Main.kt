@@ -56,7 +56,7 @@ data class Post(
     val replyOwnerId: Int,
     val replyPostId: Int,
     val friendsOnly: Boolean,
-    val comments: Comments,
+    val comments: Comment,
     val copyright: Copyright,
     val likes: Likes,
     val reposts: Reposts,
@@ -75,8 +75,9 @@ data class Post(
     val postponedId: Int,
     val donut: Donut,
     val attachments: Array<Attachment> = emptyArray()
+    //val complaints: Complaint
     )
-data class Comments(
+data class Comment(
     var count: Int = 0,
     val canPost: Boolean = true,
     val groupsCanPost: Int,
@@ -84,6 +85,11 @@ data class Comments(
     val canOpen: Boolean = true
     )
 
+data class Complaint (
+    val ownerId: Int,
+    val commentId: Int,
+    val reason: Int
+        )
 data class Copyright (
     val id: Int,
     val link: String,
@@ -145,20 +151,57 @@ data class Donut (
 data class Placeholder(
     val placeholder: Boolean
 )
+
+class PostNotFoundException (message: String) : RuntimeException (message)
 object WallService {
     private var posts = emptyArray<Post>()
-
+    private var comments = emptyArray<Comment>()
+    private var complaints = emptyArray<Complaint>()
     fun clear() {
         posts = emptyArray()
+        comments = emptyArray()
     }
 
+    fun createComplaint (postId: Int, complaint: Complaint): Complaint{
+            for ((index, item) in posts.withIndex()) {
+                if (postId == index) {
+                    complaints += complaint.copy()
+                    return complaints.last()
+//                    try {
+//                        complaint.reason < 0 && complaint.reason > 10
+//                        "Error"
+//                    } catch (complain.reason == 0) {
+//                        "spam"
+//                    }
+                }
+            }
+        return throw PostNotFoundException ("$postId пост не найден")
+    }
+
+//    fun AddReason (reason: Int, complaint: Complaint): Complaint{
+//        try {
+//            complaint.reason < 0 && createComplaint().reason > 10
+//            PostNotFoundException  ("Error")
+//        } catch (e:RuntimeException){
+//            complaint.reason == 0
+//            PostNotFoundException  ("spam")
+//        }
+//    }
+    fun createComment (postId: Int, comment: Comment): Comment{
+        for ((index, item) in posts.withIndex()){
+            if (index == postId) {
+                comments += comment.copy()
+                return comments.last()
+            }
+        }
+        return throw PostNotFoundException ("$postId пост не найден")
+    }
     fun add(post: Post): Post {
         posts += post.copy()
         return posts.last()
     }
 
     fun update(post: Post): Boolean {
-        //var result = true
         for ((index, item) in posts.withIndex()) {
             if (post.id == item.id) {
                 posts[index] = post.copy()
@@ -170,6 +213,7 @@ object WallService {
 }
 
 fun main () {
+    println(WallService.createComplaint(1, complaint = Complaint(1, 1,1)))
 //    println(WallService.add(Post(1,1,1,1,1,1,22,"Первый пост", true)))
 //    println(WallService.add(Post(2,1,1,1,1,1,22,"Первый пост", true)))
 //    println(WallService.update(Post(1,2,2,2,2,1,22,"Первый пост обновленный", true)))
